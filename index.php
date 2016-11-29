@@ -49,9 +49,11 @@ wx.config({
           signature: '<?php echo $signPackage["signature"];?>',
           jsApiList: [
 	                      // 所有要调用的 API 都要加到这个列表中
-	                      'onMenuShareTimeline',
-	                      'onMenuShareAppMessage',
-	                      'getLocation'
+                          'checkJsApi',
+                          'openLocation',
+                          'getLocation',
+                          'onMenuShareTimeline',
+                          'onMenuShareAppMessage'
                       ]
 });
 wx.ready(function () {
