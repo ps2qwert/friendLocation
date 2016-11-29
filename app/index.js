@@ -5,16 +5,20 @@ var echarts = require("echarts/lib/echarts")
 require('echarts/lib/chart/bar');
 // 引入提示框和标题组件
 require('echarts/lib/component/tooltip');
+require('echarts/lib/chart/treemap');
 require('echarts/lib/component/title');
 require('echarts/lib/chart/scatter');
 require('echarts/lib/chart/map');
 require('echarts/lib/component/geo');
 require('echarts/lib/component/legend');
-require('echarts/lib/component/series');
+require('echarts/lib/component/dataZoom');
+require('echarts/lib/component/visualMap');
+require('echarts/map/js/china')
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('main'));
 // 绘制图表
-$.get('data/asset/data/weibo.json', function (weiboData) {
+myChart.showLoading();
+$.get('weibo.json', function (weiboData) {
     myChart.hideLoading();
 
     weiboData = weiboData.map(function (serieData, idx) {
@@ -36,7 +40,7 @@ $.get('data/asset/data/weibo.json', function (weiboData) {
     myChart.setOption(option = {
         backgroundColor: '#404a59',
         title : {
-            text: '微博签到数据点亮中国',
+            text: '您的好友位置',
             subtext: 'From ThinkGIS',
             sublink: 'http://www.thinkgis.cn/public/sina',
             left: 'center',
@@ -46,13 +50,6 @@ $.get('data/asset/data/weibo.json', function (weiboData) {
             }
         },
         tooltip: {},
-        legend: {
-            left: 'left',
-            data: ['强', '中', '弱'],
-            textStyle: {
-                color: '#ccc'
-            }
-        },
         geo: {
             name: '强',
             type: 'scatter',
