@@ -28,6 +28,7 @@
 
 <script src="static/js/jquery-3.1.0.min.js"></script>
 <script src="static/js/jquery.fullPage.js"></script>
+<script src="static/js/d3.v3.min.js" charset="utf-8"></script>  
 <script src="dist/common.js"></script>
 <script src="dist/build.js"></script>
 
@@ -95,10 +96,10 @@ $(function(){
 
 <script>       
     
-var width = 600;
-var height = 600;
+var width = window.screen.width;
+var height = window.screen.height;
 var img_w = 77;
-var img_h = 90;
+var img_h = 77;
 
 var svg = d3.select("#section1").append("svg")
 .attr("width",width)
