@@ -1,6 +1,7 @@
 require('../static/css/reset.css'); //加载初始化样式
 require('../static/css/style.css'); //加载组件样式
-var $ = require("n-zepto");
+// var $ = require("n-zepto");
+// var $ = require("jquery")
 var echarts = require("echarts/lib/echarts")
 require('echarts/lib/chart/bar');
 // 引入提示框和标题组件
@@ -14,6 +15,16 @@ require('echarts/lib/component/legend');
 require('echarts/lib/component/dataZoom');
 require('echarts/lib/component/visualMap');
 require('echarts/map/js/china')
+
+require("fullpage.js/dist/jquery.fullpage.css")
+
+
+
+
+
+
+
+
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('main'));
 // 绘制图表

@@ -9,11 +9,25 @@
 </head>
 <body>
 
- 
-<div id="main">
-	
+<div id="dowebok">
+    <div class="section">
+        <h3>第一屏</h3>
+    </div>
+    <div class="section">
+        <div id="main">
+        </div>
+    </div>
+    <div class="section">
+        <h3>第三屏</h3>
+    </div>
+    <div class="section">
+        <h3>第四屏</h3>
+    </div>
 </div>
 
+
+<script src="static/js/jquery-3.1.0.min.js"></script>
+<script src="static/js/jquery.fullPage.js"></script>
 <script src="dist/common.js"></script>
 <script src="dist/build.js"></script>
 
@@ -39,7 +53,7 @@
      * 邮件主题：【微信JS-SDK反馈】具体问题
      * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
      */
-Zepto(function($){
+$(function(){
         wx.config({
                   debug: false,
                   appId: '<?php echo $signPackage["appId"];?>',
@@ -71,6 +85,11 @@ Zepto(function($){
         	    }
         	});                      
         });
+
+        $('#dowebok').fullpage({
+
+        });
+
 })
 </script>  
 

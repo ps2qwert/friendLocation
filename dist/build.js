@@ -2,9 +2,10 @@ webpackJsonp([0,1],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(1); //加载初始化样式
-	__webpack_require__(5); //加载组件样式
-	var $ = __webpack_require__(7);
+	/* WEBPACK VAR INJECTION */(function($) {__webpack_require__(2); //加载初始化样式
+	__webpack_require__(6); //加载组件样式
+	// var $ = require("n-zepto");
+	// var $ = require("jquery")
 	var echarts = __webpack_require__(8)
 	__webpack_require__(107);
 	// 引入提示框和标题组件
@@ -18,6 +19,16 @@ webpackJsonp([0,1],[
 	__webpack_require__(194);
 	__webpack_require__(208);
 	__webpack_require__(224)
+
+	__webpack_require__(394)
+
+
+
+
+
+
+
+
 	// 基于准备好的dom，初始化echarts实例
 	var myChart = echarts.init(document.getElementById('main'));
 	// 绘制图表
@@ -120,25 +131,10 @@ webpackJsonp([0,1],[
 	});
 
 
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 6 */,
-/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* Zepto v1.2.0 - zepto event ajax form ie - zeptojs.com/license */
@@ -1795,6 +1791,22 @@ webpackJsonp([0,1],[
 	}))
 
 /***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 7 */,
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -67612,6 +67624,12 @@ webpackJsonp([0,1],[
 
 	    module.exports = VMLPainter;
 
+
+/***/ },
+/* 394 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 ]);
