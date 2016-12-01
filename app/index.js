@@ -29,100 +29,127 @@ require("fullpage.js/dist/jquery.fullpage.css")
 var myChart = echarts.init(document.getElementById('main'));
 // 绘制图表
 myChart.showLoading();
-$.get('weibo.json', function (weiboData) {
-    myChart.hideLoading();
+wx.ready(function () {
+        wx.getLocation({
+            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            success: function (res) {
+                var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                var speed = res.speed; // 速度，以米/每秒计
+                var accuracy = res.accuracy; // 位置精度
+                alert(latitude);
+                alert(longitude);
+                var arr = []
+                arr[0] = [longitude,latitude]
+                $.ajax({
+                    url : "data.php",
+                    type : "POST",
+                    data : {
+                        x : latitude,
+                        y : longitude
+                    },
+                    dataType : "json",
+                    success : function(data){
 
-    weiboData = weiboData.map(function (serieData, idx) {
-        var px = serieData[0] / 1000;
-        var py = serieData[1] / 1000;
-        var res = [[px, py]];
-
-        for (var i = 2; i < serieData.length; i += 2) {
-            var dx = serieData[i] / 1000;
-            var dy = serieData[i + 1] / 1000;
-            var x = px + dx;
-            var y = py + dy;
-            res.push([x.toFixed(2), y.toFixed(2), 1]);
-            px = x;
-            py = y;
-        }
-        return res;
-    });
-    myChart.setOption(option = {
-        backgroundColor: '#404a59',
-        title : {
-            text: '您的好友位置',
-            subtext: 'From ThinkGIS',
-            sublink: 'http://www.thinkgis.cn/public/sina',
-            left: 'center',
-            top: 'top',
-            textStyle: {
-                color: '#fff'
+                        getGeo(arr);
+                    },
+                    error:function(x,y,z){
+                        console.log(x);
+                        console.log(y);
+                        console.log(z);
+                    }
+                })
             }
-        },
-        tooltip: {},
-        geo: {
-            name: '强',
-            type: 'scatter',
-            map: 'china',
-            label: {
-                emphasis: {
-                    show: false
+        });   
+})
+
+function getGeo(arrData){
+    $.get('weibo.json', function (weiboData) {
+        myChart.hideLoading();
+        weiboData = weiboData.map(function (serieData, idx) {
+            var px = serieData[0] / 1000;
+            var py = serieData[1] / 1000;
+            var res = [[px, py]];
+            for (var i = 2; i < serieData.length; i += 2) {
+                var dx = serieData[i] / 1000;
+                var dy = serieData[i + 1] / 1000;
+                var x = px + dx;
+                var y = py + dy;
+                res.push([x.toFixed(2), y.toFixed(2), 1]);
+                px = x;
+                py = y;
+            }
+            return res;
+        });
+        myChart.setOption(option = {
+            backgroundColor: '#404a59',
+            title : {
+                text: '您的好友位置',
+                subtext: 'From ThinkGIS',
+                sublink: 'http://www.thinkgis.cn/public/sina',
+                left: 'center',
+                top: '20',
+                textStyle: {
+                    color: '#fff'
                 }
             },
-            itemStyle: {
-                normal: {
-                    areaColor: '#323c48',
-                    borderColor: '#111'
+            tooltip: {},
+            legend: {
+                left: 'center',
+                bottom:'20',
+                data: ['我', '朋友'],
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+            geo: {
+                name: '我',
+                type: 'scatter',
+                map: 'china',
+                label: {
+                    emphasis: {
+                        show: false
+                    }
                 },
-                emphasis: {
-                    areaColor: '#2a333d'
-                }
-            }
-        },
-        series: [{
-            name: '弱',
-            type: 'scatter',
-            coordinateSystem: 'geo',
-            symbolSize: 1,
-            large: true,
-            itemStyle: {
-                normal: {
-                    shadowBlur: 2,
-                    shadowColor: 'rgba(37, 140, 249, 0.8)',
-                    color: 'rgba(37, 140, 249, 0.8)'
+                itemStyle: {
+                    normal: {
+                        areaColor: '#323c48',
+                        borderColor: '#111'
+                    },
+                    emphasis: {
+                        areaColor: '#2a333d'
+                    }
                 }
             },
-            data: weiboData[0]
-        }, {
-            name: '中',
-            type: 'scatter',
-            coordinateSystem: 'geo',
-            symbolSize: 1,
-            large: true,
-            itemStyle: {
-                normal: {
-                    shadowBlur: 2,
-                    shadowColor: 'rgba(14, 241, 242, 0.8)',
-                    color: 'rgba(14, 241, 242, 0.8)'
-                }
-            },
-            data: weiboData[1]
-        }, {
-            name: '强',
-            type: 'scatter',
-            coordinateSystem: 'geo',
-            symbolSize: 1,
-            large: true,
-            itemStyle: {
-                normal: {
-                    shadowBlur: 2,
-                    shadowColor: 'rgba(255, 255, 255, 0.8)',
-                    color: 'rgba(255, 255, 255, 0.8)'
-                }
-            },
-            data: weiboData[2]
-        }]
+            series: [{
+                name: '朋友',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                symbolSize: 1,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(37, 140, 249, 0.8)',
+                        color: 'rgba(37, 140, 249, 0.8)'
+                    }
+                },
+                data: weiboData[0]
+            }, {
+                name: '我',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                symbolSize: 20,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(255, 255, 255, 0.8)',
+                        color: 'rgba(255, 255, 255, 0.8)'
+                    }
+                },
+                data: arrData
+            }]
+        });
     });
-});
-
+}

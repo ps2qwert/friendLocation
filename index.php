@@ -29,11 +29,11 @@
 <script src="static/js/jquery-3.1.0.min.js"></script>
 <script src="static/js/jquery.fullPage.js"></script>
 <script src="static/js/d3.v3.min.js" charset="utf-8"></script>  
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="dist/common.js"></script>
 <script src="dist/build.js"></script>
 
 
-<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 
 <?php
     require_once "jssdk.php";
@@ -64,27 +64,40 @@ $(function(){
                   jsApiList: [
         	                      // 所有要调用的 API 都要加到这个列表中
                                   'checkJsApi',
+                                  'onMenuShareTimeline',
+                                  'onMenuShareAppMessage',
                                   'openLocation',
                                   'getLocation',
-                                  'onMenuShareTimeline',
-                                  'onMenuShareAppMessage'
                               ]
         });
         wx.ready(function () {
                // 在这里调用 API
-        	wx.getLocation({
-        	    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-        	    success: function (res) {
-        	        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-        	        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-        	        var speed = res.speed; // 速度，以米/每秒计
-        	        var accuracy = res.accuracy; // 位置精度
-        	        alert(latitude);
-        	        alert(longitude);
-        	        alert(speed);
-        	        alert(accuracy);
-        	    }
-        	});                      
+        	// wx.getLocation({
+        	//     type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+        	//     success: function (res) {
+        	//         var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+        	//         var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+        	//         var speed = res.speed; // 速度，以米/每秒计
+        	//         var accuracy = res.accuracy; // 位置精度
+        	//         alert(latitude);
+        	//         alert(longitude);
+        	//         alert(speed);
+        	//         alert(accuracy);
+         //            $.ajax({
+         //                url : "data.php",
+         //                type : "POST",
+         //                data : {
+         //                    x : latitude,
+         //                    y : longitude
+         //                },
+         //                dataType : "json",
+         //                success : function(data){
+         //                    console.log(data)
+         //                }
+         //            })
+        	//     }
+        	// });   
+             wx.hideOptionMenu();         
         });
 
         $('#dowebok').fullpage({
@@ -96,8 +109,8 @@ $(function(){
 
 <script>       
     
-var width = window.screen.width;
-var height = window.screen.height;
+var width = window.screen.width ;
+var height = window.screen.height - 60;
 var img_w = 77;
 var img_h = 77;
 
@@ -134,6 +147,7 @@ var edges_text = svg.selectAll(".linetext")
     .enter()
     .append("text")
     .attr("class","linetext")
+    .style("fill-opacity",0)
     .text(function(d){
       return d.relation;
     });
@@ -148,25 +162,25 @@ var nodes_img = svg.selectAll("image")
     .attr("xlink:href",function(d){
       return d.image;
     })
-    .on("mouseover",function(d,i){
-      //显示连接线上的文字
-      edges_text.style("fill-opacity",function(edge){
-        if( edge.source === d || edge.target === d ){
-          return 1.0;
-        }
-      });
-    })
-    .on("mouseout",function(d,i){
-      //隐去连接线上的文字
-      edges_text.style("fill-opacity",function(edge){
-        if( edge.source === d || edge.target === d ){
-          return 0.0;
-        }
-      });
-    })
+    // .on("mouseover",function(d,i){
+    //   //显示连接线上的文字
+    //   edges_text.style("fill-opacity",function(edge){
+    //     if( edge.source === d || edge.target === d ){
+    //       return 1.0;
+    //     }
+    //   });
+    // })
+    // .on("mouseout",function(d,i){
+    //   //隐去连接线上的文字
+    //   edges_text.style("fill-opacity",function(edge){
+    //     if( edge.source === d || edge.target === d ){
+    //       return 0.0;
+    //     }
+    //   });
+    // })
     .call(force.drag);
 
-var text_dx = -20;
+var text_dx = -30;
 var text_dy = 20;
 
 var nodes_text = svg.selectAll(".nodetext")
