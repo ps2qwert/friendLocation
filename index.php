@@ -37,7 +37,7 @@
 
 <?php
     require_once "jssdk.php";
-    $jssdk = new JSSDK("wx0beed264f1a96f07", "f157e5bb45da450c39352180f795300b");
+    $jssdk = new JSSDK("wxf90ee8b34845fa70", "d84fc57802da6bc3f7bc3362670b6543");
     $signPackage = $jssdk->GetSignPackage();
 ?>
 
