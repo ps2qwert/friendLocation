@@ -9,6 +9,7 @@ require('echarts/lib/component/tooltip');
 require('echarts/lib/chart/treemap');
 require('echarts/lib/component/title');
 require('echarts/lib/chart/scatter');
+require('echarts/lib/chart/effectScatter')
 require('echarts/lib/chart/map');
 require('echarts/lib/component/geo');
 require('echarts/lib/component/legend');
@@ -37,21 +38,23 @@ wx.ready(function () {
                 var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
                 var speed = res.speed; // 速度，以米/每秒计
                 var accuracy = res.accuracy; // 位置精度
-                alert(latitude);
-                alert(longitude);
-                var arr = []
+                var arr = [];
+                var uidName = $("#uid").attr("name")
+                var id = $("#uid").val();
                 arr[0] = [longitude,latitude]
                 $.ajax({
                     url : "data.php",
                     type : "POST",
                     data : {
-                        x : latitude,
-                        y : longitude
+                        x : longitude,
+                        y : latitude,
+                        id : id,
+                        type : uidName
                     },
                     dataType : "json",
                     success : function(data){
 
-                        getGeo(arr);
+                        getGeo(data);
                     },
                     error:function(x,y,z){
                         console.log(x);
@@ -64,12 +67,28 @@ wx.ready(function () {
 })
 
 function getGeo(arrData){
+    arrData = arrData.map(function (serieData,idx){
+            var px = Number(serieData['x']);
+            var py = Number(serieData['y']);
+            if(!isNaN(px) && !isNaN(py)){
+                    var res = [[px,py]];
+            }else{
+                    var res = []
+                    $.each(serieData,function(idx,obj){
+                        var dx = Number(obj.fx);
+                        var dy = Number(obj.fy);
+                        res.push([dx,dy])
+                    })       
+            }
+            return res;
+    })
     $.get('weibo.json', function (weiboData) {
         myChart.hideLoading();
         weiboData = weiboData.map(function (serieData, idx) {
             var px = serieData[0] / 1000;
             var py = serieData[1] / 1000;
             var res = [[px, py]];
+
             for (var i = 2; i < serieData.length; i += 2) {
                 var dx = serieData[i] / 1000;
                 var dy = serieData[i + 1] / 1000;
@@ -125,7 +144,7 @@ function getGeo(arrData){
                 name: '朋友',
                 type: 'scatter',
                 coordinateSystem: 'geo',
-                symbolSize: 1,
+                symbolSize: 5,
                 large: true,
                 itemStyle: {
                     normal: {
@@ -134,21 +153,25 @@ function getGeo(arrData){
                         color: 'rgba(37, 140, 249, 0.8)'
                     }
                 },
-                data: weiboData[0]
+                data: arrData[1]
             }, {
                 name: '我',
-                type: 'scatter',
+                type: 'effectScatter',
                 coordinateSystem: 'geo',
-                symbolSize: 20,
+                rippleEffect: {
+                    brushType: 'stroke'
+                },
+                symbolSize: 10,
                 large: true,
                 itemStyle: {
                     normal: {
-                        shadowBlur: 2,
+                        shadowBlur: 10,
                         shadowColor: 'rgba(255, 255, 255, 0.8)',
                         color: 'rgba(255, 255, 255, 0.8)'
                     }
                 },
-                data: arrData
+                zlevel: 1,
+                data: arrData[0]
             }]
         });
     });
